@@ -35,7 +35,6 @@ void main(void)
   vec4 ispec = pow(max(dot(nn, nh), 0.0), kshi) * kspec * lspec;
 
   float height = normSample.a;
-  float specMask = step(height, 0.0);
 
   fc = texture(color, tc) * (iamb + idiff) + step(texture(normal, tc).w, 0.0) * ispec;
 }
