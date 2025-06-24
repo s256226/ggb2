@@ -25,11 +25,20 @@ out vec4 fc;                                        // フラグメントの色
 
 void main(void)
 {
-  vec3 nn = vec3(0.0, 0.0, 1.0);                    // 接空間における法線ベクトル
+  vec3 nn = texture(nmap, tc).xyz * 2.0 - 1.0; // 法線ベクトル
   vec3 nl = normalize(l);                           // 接空間における光線ベクトル
   vec3 nh = normalize(h);                           // 接空間における中間ベクトル
 
-  vec3 nn = texture(nmap, tc).xyz * 2.0 - 1.0; // 法線ベクトル
+  vec4 p = mw * pv; // 視点座標系の頂点位
+  vec3 v = normalize(p.xyz); // 視線ベクトル
+  vec3 n = normalize((mg * nv).xyz); // 法線ベクトル
+  vec3 t = normalize(vec3(n.z, 0.0, -n.x)); // 接線ベクトル
+  vec3 b = cross(n, t); // 従接線ベクト
+  mat3 m = transpose(mat3(t, b, n)); // 接空間基底行列
+  l = normalize(m * vec3(4.0, 5.0, 6.0)); // 光線ベクトル
+  h = normalize(l + m * v); // 中間ベクトル
+  tc = tv;
+
   vec4 iamb = kamb * lamb;
   vec4 idiff = max(dot(nn, nl), 0.0) * kdiff * ldiff;
   vec4 ispec = pow(max(dot(nn, nh), 0.0), kshi) * kspec * lspec;
