@@ -29,6 +29,7 @@ void main(void)
   vec3 nl = normalize(l);                           // 接空間における光線ベクトル
   vec3 nh = normalize(h);                           // 接空間における中間ベクトル
 
+  vec3 nn = texture(nmap, tc).xyz * 2.0 - 1.0; // 法線ベクトル
   vec4 iamb = kamb * lamb;
   vec4 idiff = max(dot(nn, nl), 0.0) * kdiff * ldiff;
   vec4 ispec = pow(max(dot(nn, nh), 0.0), kshi) * kspec * lspec;
