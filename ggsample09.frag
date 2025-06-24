@@ -37,5 +37,5 @@ void main(void)
   float height = normSample.a;
   float specMask = step(height, 0.0);
 
-  fc = texture(color, tc) * (iamb + idiff) + specMask * ispec;
+  fc = texture(color, tc) * (iamb + idiff) + step(texture(normal, tc).w, 0.0) * ispec;
 }
